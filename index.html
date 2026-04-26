@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kings & Co. Barbershop</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black: #0a0a08;
+    --cream: #f5f0e8;
+    --gold: #c9a84c;
+    --gold-light: #e8c96a;
+    --warm-gray: #2a2620;
+    --text-muted: #8a8070;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--cream);
+    font-family: 'DM Sans', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 1.5rem 4rem;
+    display: flex; justify-content: space-between; align-items: center;
+    background: linear-gradient(to bottom, rgba(10,10,8,0.95), transparent);
+  }
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem; font-weight: 700;
+    letter-spacing: 0.05em;
+    color: var(--gold);
+  }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    color: var(--cream); text-decoration: none;
+    font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase;
+    opacity: 0.75; transition: opacity 0.2s;
+  }
+  .nav-links a:hover { opacity: 1; }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: grid; grid-template-columns: 1fr 1fr;
+    position: relative; overflow: hidden;
+  }
+  .hero-left {
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 8rem 4rem 4rem;
+    position: relative; z-index: 2;
+  }
+  .hero-eyebrow {
+    font-size: 0.75rem; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 1.5rem;
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .hero-eyebrow::before {
+    content: ''; display: block;
+    width: 40px; height: 1px; background: var(--gold);
+  }
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3.5rem, 6vw, 5.5rem);
+    line-height: 1.05; font-weight: 900;
+    margin-bottom: 1.5rem;
+  }
+  .hero-title em { font-style: italic; color: var(--gold); }
+  .hero-sub {
+    font-size: 1rem; line-height: 1.7;
+    color: var(--text-muted); max-width: 380px;
+    margin-bottom: 3rem;
+  }
+  .hero-cta {
+    display: inline-flex; align-items: center; gap: 1rem;
+    background: var(--gold); color: var(--black);
+    padding: 1rem 2rem; font-size: 0.85rem;
+    font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+    text-decoration: none; transition: background 0.2s;
+    width: fit-content;
+  }
+  .hero-cta:hover { background: var(--gold-light); }
+  .hero-cta-arrow { font-size: 1.1rem; }
+
+  .hero-right {
+    position: relative; overflow: hidden;
+  }
+  .hero-img-placeholder {
+    width: 100%; height: 100%;
+    background:
+      linear-gradient(135deg, #1a1610 0%, #2d2418 40%, #1a1408 100%);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .barber-pole {
+    width: 60px; height: 300px;
+    border-radius: 30px;
+    background: repeating-linear-gradient(
+      -45deg,
+      #fff 0px, #fff 10px,
+      #c00 10px, #c00 20px,
+      #fff 20px, #fff 30px,
+      #0040c0 30px, #0040c0 40px
+    );
+    opacity: 0.18;
+    animation: spinPole 8s linear infinite;
+  }
+  @keyframes spinPole {
+    from { background-position: 0 0; }
+    to { background-position: 0 200px; }
+  }
+  .hero-overlay-text {
+    position: absolute; bottom: 3rem; right: 3rem;
+    font-family: 'Playfair Display', serif;
+    font-size: 8rem; font-weight: 900;
+    color: rgba(201,168,76,0.06);
+    line-height: 1; text-align: right;
+    user-select: none; pointer-events: none;
+  }
+  .hero-badge {
+    position: absolute; top: 8rem; right: 3rem;
+    width: 100px; height: 100px;
+    border: 1px solid rgba(201,168,76,0.4);
+    border-radius: 50%;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    animation: rotateBadge 15s linear infinite;
+  }
+  .hero-badge-inner { font-size: 0.55rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); line-height: 1.6; }
+  @keyframes rotateBadge { to { transform: rotate(360deg); } }
+
+  /* ── STATS BAR ── */
+  .stats-bar {
+    border-top: 1px solid rgba(201,168,76,0.15);
+    border-bottom: 1px solid rgba(201,168,76,0.15);
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    background: var(--warm-gray);
+  }
+  .stat-item {
+    padding: 2rem; text-align: center;
+    border-right: 1px solid rgba(201,168,76,0.15);
+  }
+  .stat-item:last-child { border-right: none; }
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem; font-weight: 700; color: var(--gold);
+    line-height: 1;
+  }
+  .stat-label { font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-top: 0.4rem; }
+
+  /* ── SERVICES ── */
+  .services { padding: 6rem 4rem; }
+  .section-header { margin-bottom: 4rem; }
+  .section-tag {
+    font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 1rem;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3rem); font-weight: 700;
+  }
+  .services-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+    background: rgba(201,168,76,0.1);
+    border: 1px solid rgba(201,168,76,0.1);
+  }
+  .service-card {
+    background: var(--black); padding: 2.5rem;
+    transition: background 0.3s;
+    position: relative; overflow: hidden;
+  }
+  .service-card:hover { background: var(--warm-gray); }
+  .service-card::before {
+    content: ''; position: absolute; top: 0; left: 0;
+    width: 0; height: 2px; background: var(--gold);
+    transition: width 0.4s;
+  }
+  .service-card:hover::before { width: 100%; }
+  .service-icon { font-size: 1.5rem; margin-bottom: 1.25rem; opacity: 0.7; }
+  .service-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem; margin-bottom: 0.5rem;
+  }
+  .service-desc { font-size: 0.875rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.25rem; }
+  .service-price { font-size: 1.5rem; font-weight: 300; color: var(--gold); }
+
+  /* ── ABOUT STRIP ── */
+  .about-strip {
+    background: var(--cream); color: var(--black);
+    padding: 6rem 4rem;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center;
+  }
+  .about-label { font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; }
+  .about-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 3vw, 2.5rem); font-weight: 700;
+    color: var(--black); line-height: 1.2; margin-bottom: 1.5rem;
+  }
+  .about-body { font-size: 0.95rem; line-height: 1.8; color: #4a4030; }
+  .about-right { display: flex; flex-direction: column; gap: 2rem; }
+  .about-feature { display: flex; gap: 1.25rem; align-items: flex-start; }
+  .about-feature-icon {
+    width: 44px; height: 44px; border: 1px solid var(--gold);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem; flex-shrink: 0; color: var(--gold);
+  }
+  .about-feature-title { font-weight: 500; font-size: 0.95rem; margin-bottom: 0.25rem; color: var(--black); }
+  .about-feature-text { font-size: 0.85rem; color: #6a5f50; line-height: 1.6; }
+
+  /* ── BOOKING ── */
+  .booking {
+    padding: 6rem 4rem; text-align: center;
+    background: var(--warm-gray);
+    position: relative; overflow: hidden;
+  }
+  .booking::before {
+    content: 'BOOK'; position: absolute;
+    font-family: 'Playfair Display', serif;
+    font-size: 18rem; font-weight: 900;
+    color: rgba(201,168,76,0.03);
+    top: 50%; left: 50%; transform: translate(-50%,-50%);
+    white-space: nowrap; user-select: none;
+  }
+  .booking-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 700;
+    margin-bottom: 1rem; position: relative;
+  }
+  .booking-sub { color: var(--text-muted); margin-bottom: 3rem; font-size: 1rem; position: relative; }
+  .booking-form { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; position: relative; }
+  .booking-input {
+    padding: 1rem 1.5rem; background: var(--black);
+    border: 1px solid rgba(201,168,76,0.2); color: var(--cream);
+    font-family: 'DM Sans', sans-serif; font-size: 0.9rem;
+    min-width: 200px; outline: none;
+    transition: border-color 0.2s;
+  }
+  .booking-input:focus { border-color: var(--gold); }
+  .booking-input::placeholder { color: var(--text-muted); }
+  .booking-btn {
+    padding: 1rem 2.5rem; background: var(--gold);
+    color: var(--black); border: none; cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem; font-weight: 500;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    transition: background 0.2s;
+  }
+  .booking-btn:hover { background: var(--gold-light); }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 3rem 4rem; border-top: 1px solid rgba(201,168,76,0.1);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .footer-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem; color: var(--gold);
+  }
+  .footer-info { font-size: 0.8rem; color: var(--text-muted); text-align: right; line-height: 1.8; }
+
+  /* ── SCROLL ANIMATIONS ── */
+  .fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── MOBILE ── */
+  @media (max-width: 768px) {
+    nav { padding: 1.5rem 1.5rem; }
+    .nav-links { display: none; }
+    .hero { grid-template-columns: 1fr; }
+    .hero-left { padding: 7rem 1.5rem 3rem; }
+    .hero-right { display: none; }
+    .stats-bar { grid-template-columns: 1fr; }
+    .stat-item { border-right: none; border-bottom: 1px solid rgba(201,168,76,0.15); }
+    .services { padding: 4rem 1.5rem; }
+    .services-grid { grid-template-columns: 1fr; }
+    .about-strip { grid-template-columns: 1fr; padding: 4rem 1.5rem; gap: 3rem; }
+    .booking { padding: 4rem 1.5rem; }
+    footer { flex-direction: column; gap: 1rem; text-align: center; padding: 2rem 1.5rem; }
+    .footer-info { text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Kings & Co.</div>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#booking">Book</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow">Est. 2009 · Brooklyn, NY</div>
+    <h1 class="hero-title">
+      The Art of<br>
+      <em>Sharp.</em>
+    </h1>
+    <p class="hero-sub">
+      Precision cuts. Classic shaves. A chair that's been the best seat in the neighborhood for fifteen years.
+    </p>
+    <a href="#booking" class="hero-cta">
+      Book your chair <span class="hero-cta-arrow">→</span>
+    </a>
+  </div>
+  <div class="hero-right">
+    <div class="hero-img-placeholder">
+      <div class="barber-pole"></div>
+    </div>
+    <div class="hero-overlay-text">CUT</div>
+    <div class="hero-badge">
+      <div class="hero-badge-inner">WALK<br>INS<br>WELCOME</div>
+    </div>
+  </div>
+</section>
+
+<div class="stats-bar">
+  <div class="stat-item fade-up">
+    <div class="stat-num">15+</div>
+    <div class="stat-label">Years in the game</div>
+  </div>
+  <div class="stat-item fade-up">
+    <div class="stat-num">4.9★</div>
+    <div class="stat-label">Google rating</div>
+  </div>
+  <div class="stat-item fade-up">
+    <div class="stat-num">3k+</div>
+    <div class="stat-label">Happy clients</div>
+  </div>
+</div>
+
+<section class="services" id="services">
+  <div class="section-header fade-up">
+    <div class="section-tag">What we do</div>
+    <h2 class="section-title">Services & Pricing</h2>
+  </div>
+  <div class="services-grid">
+    <div class="service-card fade-up">
+      <div class="service-icon">✂</div>
+      <div class="service-name">Classic Cut</div>
+      <div class="service-desc">Scissor or clipper cut, tailored to your face shape. Finished with a hot towel and style.</div>
+      <div class="service-price">$35</div>
+    </div>
+    <div class="service-card fade-up">
+      <div class="service-icon">🪒</div>
+      <div class="service-name">Hot Shave</div>
+      <div class="service-desc">Straight razor shave with hot lather, pre-shave oil, and a cold towel finish. Pure luxury.</div>
+      <div class="service-price">$45</div>
+    </div>
+    <div class="service-card fade-up">
+      <div class="service-icon">👑</div>
+      <div class="service-name">King's Package</div>
+      <div class="service-desc">Cut + shave combo. The full treatment. Walk in looking good, walk out looking sharp.</div>
+      <div class="service-price">$70</div>
+    </div>
+    <div class="service-card fade-up">
+      <div class="service-icon">🧔</div>
+      <div class="service-name">Beard Lineup</div>
+      <div class="service-desc">Shape, trim, and define your beard. Finished with beard oil and a mirror you'll want to keep.</div>
+      <div class="service-price">$25</div>
+    </div>
+    <div class="service-card fade-up">
+      <div class="service-icon">👦</div>
+      <div class="service-name">Kids Cut</div>
+      <div class="service-desc">Patient, gentle cuts for the little ones. Under 12. First haircut? We make it a good memory.</div>
+      <div class="service-price">$22</div>
+    </div>
+    <div class="service-card fade-up">
+      <div class="service-icon">🎩</div>
+      <div class="service-name">Event Ready</div>
+      <div class="service-desc">Wedding, graduation, big interview — book same-week for a look that matters when it matters.</div>
+      <div class="service-price">From $80</div>
+    </div>
+  </div>
+</section>
+
+<section class="about-strip" id="about">
+  <div>
+    <div class="about-label fade-up">Our story</div>
+    <h2 class="about-title fade-up">Fifteen years of sharp cuts and straight talk</h2>
+    <p class="about-body fade-up">
+      Kings & Co. started in a single chair with a single rule: don't rush a good cut. That rule hasn't changed. Every barber here trained for years before touching a paying client. Come for the cut, stay for the conversation.
+    </p>
+  </div>
+  <div class="about-right">
+    <div class="about-feature fade-up">
+      <div class="about-feature-icon">⏱</div>
+      <div>
+        <div class="about-feature-title">No waiting around</div>
+        <div class="about-feature-text">Book online and your chair is ready when you walk in. Walk-ins welcome too — we'll tell you the wait honestly.</div>
+      </div>
+    </div>
+    <div class="about-feature fade-up">
+      <div class="about-feature-icon">✦</div>
+      <div>
+        <div class="about-feature-title">Trained barbers only</div>
+        <div class="about-feature-text">Every member of our team has at least three years of experience. No apprentices on paying clients.</div>
+      </div>
+    </div>
+    <div class="about-feature fade-up">
+      <div class="about-feature-icon">↩</div>
+      <div>
+        <div class="about-feature-title">Not happy? Come back</div>
+        <div class="about-feature-text">If something's off within a week, come back and we'll fix it. No charge, no questions.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="booking" id="booking">
+  <h2 class="booking-title fade-up">Book Your Chair</h2>
+  <p class="booking-sub fade-up">Takes 30 seconds. No account needed.</p>
+  <div class="booking-form fade-up">
+    <input class="booking-input" type="text" placeholder="Your name">
+    <input class="booking-input" type="tel" placeholder="Phone number">
+    <input class="booking-input" type="text" placeholder="Preferred day & time">
+    <button class="booking-btn">Request Booking</button>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">Kings & Co. Barbershop</div>
+  <div class="footer-info">
+    123 Atlantic Ave, Brooklyn NY · (718) 555-0190<br>
+    Mon–Sat 9am–7pm · Sun 10am–5pm
+  </div>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
