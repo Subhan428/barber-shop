@@ -1,0 +1,26 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(135deg, #333, #666);
+    color: white;
+}
+
+.container {
+    perspective: 1000px;
+}
+
+.roof {
+    width: 200px;
+    height: 200px;
+    background: linear-gradient(135deg, #ccc, #222);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: rotateX(45deg) rotateY(0);
+    transition: transform 0.5s;
+}
